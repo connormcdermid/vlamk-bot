@@ -1,3 +1,5 @@
+#!/usr/bin/env python3gi
+
 # A simple Python Discord bot
 import os
 import re  # regexes
@@ -34,5 +36,6 @@ async def on_message(message):
             print(f'Client failed to reach Discord.')
         finally:
             print(f'Message {message.id} pinned.')
+            await message.channel.send("***VALMEEEEEEEEEK***")
 
 client.run(_TOKEN)
