@@ -1,4 +1,4 @@
-#!/usr/bin/env python3gi
+#!/usr/bin/env python3
 
 # A simple Python Discord bot
 import os
