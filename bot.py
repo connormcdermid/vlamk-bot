@@ -12,30 +12,34 @@ _TOKEN = os.getenv('DISCORD_TOKEN')  # Confidential -- DO NOT MAKE PUBLIC AND DO
 
 client = discord.Client()
 
-valm_regex = re.compile(r'valm[ie]*k')
+valm_regex = re.compile(r'valm[ie]*k', re.I)
 @client.event
 async def on_ready():
     print(f'{client.user} has established a connection to Discord')
     print(f'{client.user} has established a connection to the following guilds: ')
     for guild in client.guilds:
         print(f'{guild.name}(id: {guild.id})')
+        for channel in guild.channels:
+            print(f'{channel.name}')
 
 
 @client.event
 async def on_message(message):
     if 'vlamk' in message.content or 'valmik' in message.content or valm_regex.match(message.content):
         print(f'Reference to Valmik found in message {message.id}')
-        print(f'Pinning...')
         try:
-            await message.pin()
+            await message.channel.send("***I sense that a great name of power has been invoked. The name of...***")
         except discord.Forbidden:
-            print(f'Failed to pin message {message.id} -- incorrect permissions')
+            print(f'Failed to send reply to message {message.id} -- incorrect permissions')
         except discord.NotFound:
             print(f'Message {message.id} not found -- perhaps it was deleted?')
         except discord.HTTPException:
             print(f'Client failed to reach Discord.')
         finally:
-            print(f'Message {message.id} pinned.')
+            print(f'Message {message.id} replied to.')
             await message.channel.send("***VALMEEEEEEEEEK***")
+
+
+
 
 client.run(_TOKEN)
