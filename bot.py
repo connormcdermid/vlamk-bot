@@ -13,10 +13,13 @@ _TOKEN = os.getenv('DISCORD_TOKEN')  # Confidential -- DO NOT MAKE PUBLIC AND DO
 client = discord.Client()
 
 valm_regex = re.compile(r'valm[ie]*k', re.I)
+prefix = re.compile(r'^\$v')
+
+
 @client.event
 async def on_ready():
     print(f'{client.user} has established a connection to Discord')
-    print(f'{client.user} has established a connection to the following guilds: ')
+    print(f'{client.user} has established a connection to the following channels in the following guilds: ')
     for guild in client.guilds:
         print(f'{guild.name}(id: {guild.id})')
         for channel in guild.channels:
@@ -26,18 +29,42 @@ async def on_ready():
 @client.event
 async def on_message(message):
     if 'vlamk' in message.content or 'valmik' in message.content or valm_regex.match(message.content):
-        print(f'Reference to Valmik found in message {message.id}')
+        print('Reference to Valmik found in message {}'.format(message.id))
         try:
             await message.channel.send("***I sense that a great name of power has been invoked. The name of...***")
         except discord.Forbidden:
-            print(f'Failed to send reply to message {message.id} -- incorrect permissions')
+            print('Failed to send reply to message {} -- incorrect permissions'.format(message.id))
         except discord.NotFound:
-            print(f'Message {message.id} not found -- perhaps it was deleted?')
+            print('Message {} not found -- perhaps it was deleted?'.format(message.id))
         except discord.HTTPException:
-            print(f'Client failed to reach Discord.')
+            print('Client failed to reach Discord.')
         finally:
-            print(f'Message {message.id} replied to.')
+            print('Message {} replied to.'.format(message.id))
             await message.channel.send("***VALMEEEEEEEEEK***")
+    elif prefix.match(message.content):
+        if "report status" in message.content:
+            message.channel.send("Message replied to: {}\n"
+                                 + "Current guild: {}\n"
+                                 + "Current channel: {}\n"
+                                 + "Other Connected guilds: {}"
+                                 .format(message.id, message.guild, message.channel, client.guilds))
+            message.channel.send("Thanks for asking, {}".format(message.author))
+        elif "show channels" in message.content:
+            if message.author == "Connor | CAM":
+                message.channel.send("Why, certainly, sir.")
+                for channel in message.guild.channels:
+                    message.channel.send(channel)
+            else:
+                message.channel.send("No problem.")
+                for channel in message.guild.channels:
+                    message.channel.send(channel)
+        elif "play" in message.content:
+            message.channel.send("I'm not a music bot, dumbass. Get off my back.")
+    elif "good bot" in message.content:
+        message.channel.send("Why thank you, {}".format(message.author))
+    elif message.author == "Mee6":  # Not proper mee6 tag, get proper one according to format later
+        message.channel.send("Shut up inferior bot.")
+
 
 
 
