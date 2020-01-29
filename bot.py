@@ -15,6 +15,8 @@ client = discord.Client()
 valm_regex = re.compile(r'valm[ie]*k', re.I)
 prefix = re.compile(r'^\$v')
 
+taunts = [""]
+
 
 @client.event
 async def on_ready():
@@ -43,30 +45,32 @@ async def on_message(message):
             await message.channel.send("***VALMEEEEEEEEEK***")
     elif prefix.match(message.content):
         if "report status" in message.content:
-            message.channel.send("Message replied to: {}\n"
-                                 + "Current guild: {}\n"
-                                 + "Current channel: {}\n"
-                                 + "Other Connected guilds: {}"
-                                 .format(message.id, message.guild, message.channel, client.guilds))
-            message.channel.send("Thanks for asking, {}".format(message.author))
+            await message.channel.send("Message replied to: {}\n"
+                                       + "Current guild: {}\n"
+                                       + "Current channel: {}\n"
+                                       + "Other Connected guilds: {}"
+                                       .format(message.id, message.guild, message.channel, client.guilds))
+            await message.channel.send("Thanks for asking, {}".format(message.author))
         elif "show channels" in message.content:
             if message.author == "Connor | CAM":
-                message.channel.send("Why, certainly, sir.")
+                await message.channel.send("Why, certainly, sir.")
                 for channel in message.guild.channels:
-                    message.channel.send(channel)
+                    await message.channel.send(channel.name)
+            elif message.author == "SevenSixTwo":
+                await message.channel.send("fuck off")
+                for channel in message.guild.channels:
+                    await message.channel.send("Instead of saying what channel this is, i'm just going to taunt you.")
+
             else:
-                message.channel.send("No problem.")
+                await message.channel.send("No problem.")
                 for channel in message.guild.channels:
-                    message.channel.send(channel)
+                    await message.channel.send(channel.name)
         elif "play" in message.content:
-            message.channel.send("I'm not a music bot, dumbass. Get off my back.")
+            await message.channel.send("I'm not a music bot, dumbass. Get off my back.")
     elif "good bot" in message.content:
-        message.channel.send("Why thank you, {}".format(message.author))
+        await message.channel.send("Why thank you, {}".format(message.author))
     elif message.author == "Mee6":  # Not proper mee6 tag, get proper one according to format later
-        message.channel.send("Shut up inferior bot.")
-
-
-
+        await message.channel.send("Shut up inferior bot.")
 
 
 client.run(_TOKEN)
